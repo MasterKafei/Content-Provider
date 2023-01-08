@@ -1,0 +1,25 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\Listener\Doctrine\CreateUserListener:
+        tags:
+            - { name: 'doctrine.orm.entity_listener', event: prePersist, entity: App\Entity\User }
+
+    App\Business\FileBusiness:
+        arguments:
+            - '%env(resolve:APP_IMAGE_DIRECTORY)%'
+
+    App\Listener\Doctrine\VideoListener:
+        tags:
+            - { name: 'doctrine.orm.entity_listener', event: prePersist, entity: App\Entity\Video }
+            - { name: 'doctrine.orm.entity_listener', event: preUpdate, entity: App\Entity\Video }

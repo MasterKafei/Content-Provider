@@ -1,0 +1,26 @@
+<!doctype html>
+{% block html_html %}
+<html lang="fr">
+{% block html %}
+    {% block head_html %}
+        <head>
+            {% block head %}
+                <meta charset="UTF-8">
+                <meta name="viewport"
+                      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>{% block title %}Find Video Games Screenshot{% endblock title %}</title>
+                {% block stylesheets %}
+                    {{ encore_entry_link_tags('app') }}
+                {% endblock %}
+            {% endblock head %}
+        </head>
+    {% endblock head_html %}
+    {% block body_html %}
+        <body>
+        {% block body %}{% endblock body %}
+        </body>
+    {% endblock body_html %}
+{% endblock html %}
+</html>
+{% endblock html_html %}

@@ -1,0 +1,42 @@
+{% extends 'Layout/Default/base.html.twig' %}
+
+{% block body %}
+    <h1 class="text-5xl py-5">{{ game.name }}</h1>
+    <p class="py-5">{{ game.summary }}</p>
+    <div class="grid grid-cols-4 gap-10 py-5 text-xl">
+        <div>
+            Score: {{ game.rating is defined ? game.rating|round(2) ~ '%' : 'Inconnu' }}
+        </div>
+        <div>
+            Plateformes: {% for platform in game.platforms|default([]) %}{{ platform.name }} {{ not loop.last ? ', ' }}{% else %}Inconnue{% endfor %}
+        </div>
+        <div>
+            Genres: {% for genre in game.genres|default([]) %}{{ genre.name }} {{ not loop.last ? ', ' }}{% else %}Inconnu{% endfor %}
+        </div>
+        <div>
+            Date de sortie: {{ game.first_release_date is defined ? game.first_release_date|date('d/m/Y') : 'Inconnu' }}
+        </div>
+
+        {% if form is not null %}
+            {{ form_start(form) }}
+            <div>
+                {{ form_label(form.video, 'Video') }}
+                <div class="mt-1 mt-0">
+                    {{ form_widget(form.video, {'attr': {'class': 'block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 max-w-xs text-sm'}}) }}
+                </div>
+                <button class="rounded-b border border-transparent bg-indigo-600 px-2.5 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        type="submit">Ajouter
+                </button>
+            </div>
+            {{ form_end(form) }}
+        {% endif %}
+    </div>
+    <div class="grid grid-cols-4 gap-10">
+        {% for screenshot in game.screenshots|default([]) %}
+            <div>
+                <img src="https://images.igdb.com/igdb/image/upload/t_1080p/{{ screenshot.image_id }}.jpg"
+                     class="border border-2 border-blue-200 rounded rounded-xl" alt="">
+            </div>
+        {% endfor %}
+    </div>
+{% endblock body %}

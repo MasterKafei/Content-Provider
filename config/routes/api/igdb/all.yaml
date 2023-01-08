@@ -1,0 +1,14 @@
+igdb_games:
+    path: /games
+
+igdb_platforms:
+    path: /platforms
+
+igdb_genres:
+    path: /genres
+
+igdb_characters:
+    path: /characters
+
+igdb_character_mug_shots:
+    path: /character_mug_shots

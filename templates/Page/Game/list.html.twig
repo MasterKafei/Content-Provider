@@ -1,0 +1,145 @@
+{% extends 'Layout/Default/base.html.twig' %}
+
+{% block body %}
+
+    <div class="px-4 px-6 lg:px-8">
+        <div class="mt-8 flex flex-col bg-white rounded-xl border border-x-gray-300 border-t-gray-300 pt-5">
+            {{ form_start(form) }}
+            <div class="m-5">
+                <div class="grid grid-cols-6 items-start gap-4 pt-5 text-center">
+                    <label for="country"
+                           class="block text-sm font-medium mt-px pt-2">{{ form_label(form.platforms, 'Plateformes') }}</label>
+                    <div class="mt-1 mt-0">
+                        {{ form_widget(form.platforms, {'attr': {'class': 'block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 max-w-xs text-sm'}}) }}
+                    </div>
+                    <label for="country"
+                           class="block text-sm font-medium mt-px pt-2">{{ form_label(form.genres, 'Genres') }}</label>
+                    <div class="mt-1 mt-0">
+                        {{ form_widget(form.genres, {'attr': {'class': 'block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 max-w-xs text-sm'}}) }}
+                    </div>
+
+                    <label for="country"
+                           class="block text-sm font-medium mt-px pt-2">{{ form_label(form.fieldsNotNullable, 'Champs obligatoires') }}</label>
+                    <div class="mt-1 mt-0">
+                        {{ form_widget(form.fieldsNotNullable, {'attr': {'class': 'block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 max-w-xs text-sm'}}) }}
+                    </div>
+                    <label for="country"
+                           class="block text-sm font-medium mt-px pt-2">{{ form_label(form.fieldOrder, 'Trié par') }}</label>
+                    <div class="mt-1 mt-0">
+                        {{ form_widget(form.fieldOrder, {'attr': {'class': 'block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 max-w-xs text-sm'}}) }}
+                    </div>
+
+                    <label for="country"
+                           class="block text-sm font-medium mt-px pt-2">{{ form_label(form.search, 'Recherche') }}</label>
+                    <div class="mt-1 mt-0">
+                        {{ form_widget(form.search, {'attr': {'class': 'block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 max-w-xs text-sm'}}) }}
+                    </div>
+                </div>
+                <div class="grid grid-cols-6 items-start gap-4 border-gray-200 pt-5 text-center">
+                    <label for="country"
+                           class="block text-sm font-medium mt-px pt-2">{{ form_label(form.sortOrder, 'Sens du tri') }}</label>
+                    <div class="mt-1 mt-0">
+                        {{ form_widget(form.sortOrder, {'attr': {'class': 'block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 max-w-xs text-sm'}}) }}
+                    </div>
+
+                    <label for="country"
+                           class="block text-sm font-medium mt-px pt-2">{{ form_label(form.limit, 'Nombre de résultat par page') }}</label>
+                    <div class="mt-1 mt-0">
+                        {{ form_widget(form.limit, {'attr': {'class': 'block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 max-w-xs text-sm'}}) }}
+                    </div>
+
+                    <label for="country"
+                           class="block text-sm font-medium mt-px pt-2">{{ form_label(form.page, 'Page') }}</label>
+                    <div class="mt-1 mt-0">
+                        {{ form_widget(form.page, {'attr': {'class': 'block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 max-w-xs text-sm'}}) }}
+                    </div>
+                </div>
+            </div>
+
+
+            {{ form_rest(form) }}
+            <div class="grid pt-5">
+                <button type="submit"
+                        class="rounded-b border border-transparent bg-indigo-600 px-2.5 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    Rechercher
+                </button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+    <div class="px-4 px-6 lg:px-8">
+        <div class="mt-8 flex flex-col">
+            <div class="-my-2 -mx-4 overflow-x-auto -mx-6 lg:-mx-8">
+                <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                    <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                        <table class="min-w-full divide-y divide-gray-300 align-middle">
+                            <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="py-3.5 pl-4 text-left text-sm font-semibold">
+                                    #
+                                </th>
+                                <th scope="col" class="py-3.5 text-center text-sm font-semibold">
+                                    Titre
+                                </th>
+                                <th scope="col" class="py-3.5 text-center text-sm font-semibold">
+                                    Rating
+                                </th>
+                                <th scope="col" class="py-3.5 text-center text-sm font-semibold">
+                                    Genres
+                                </th>
+                                <th scope="col" class="py-3.5 text-center text-sm font-semibold">
+                                    Plateformes
+                                </th>
+                                <th scope="col" class="py-3.5 text-center text-sm font-semibold">
+                                    Images
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 bg-white">
+                            {% for result in results %}
+                                <tr class="{{ loop.index % 2 == 0 ? ' bg-gray-300' }}">
+                                    <td class="py-3.5 pl-4 text-left text-sm font-medium pl-6 w-1/12">
+                                        {{ loop.index }}
+                                    </td>
+                                    <td class="py-4 text-sm w-1/12 text-justify">
+                                        <a href="{{ path('app_game_details', {'id': result.id}) }}" target="_blank"
+                                           class="text-blue-500 hover:text-blue-700">{{ result.name }}</a>
+                                    </td>
+                                    <td class="py-4 text-sm w-1/12 text-center">
+                                        {{ result.rating is defined ? result.rating|round(2) ~ '%' : 'Inconnu' }}
+                                    </td>
+                                    <td class="py-4 text-sm w-1/12 text-justify">
+                                        {% for genre in result.genres|default([]) %}
+                                            {{ genre.name }} {{ not loop.last ? ', ' }}
+                                        {% else %}
+                                            Inconnu
+                                        {% endfor %}
+                                    </td>
+                                    <td class="px-3 py-4 text-sm w-1/6 text-center">
+                                        {% for platform in result.platforms|default([])|slice(0, 10) %}
+                                            {{ platform.name }}
+                                            {{ not loop.last ? ', ' }}
+                                        {% else %}
+                                            Inconnu
+                                        {% endfor %}
+                                    </td>
+                                    <td class="px-3 py-4 text-sm w-3/6 text-center">
+                                        <div class="grid grid-cols-3 gap-10">
+                                            {% for screenshot in result.screenshots|default([])|slice(0, 3) %}
+                                                <div>
+                                                    <img src="https://images.igdb.com/igdb/image/upload/t_1080p/{{ screenshot.image_id }}.jpg"
+                                                         class="border border-2 border-blue-200 rounded rounded-md" alt="">
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

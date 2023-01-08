@@ -1,0 +1,103 @@
+{% extends 'Layout/Default/base.html.twig' %}
+
+{% block body %}
+    <table class="min-w-full divide-y divide-gray-300 align-middle">
+        <thead class="bg-gray-50">
+        <tr>
+            <th scope="col" class="py-3.5 text-center text-sm font-semibold">
+                Id
+            </th>
+            <th scope="col" class="py-3.5 text-center text-sm font-semibold">
+                Name
+            </th>
+            <th scope="col" class="py-3.5 text-center text-sm font-semibold">
+                Nombre de jeux
+            </th>
+            <th scope="col" class="py-3.5 text-center text-sm font-semibold">
+                Date de dernière modification
+            </th>
+            <th scope="col" class="py-3.5 text-center text-sm font-semibold">
+                Date de création
+            </th>
+            <th scope="col" class="py-3.5 text-center text-sm font-semibold">
+                Action
+            </th>
+        </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 bg-white">
+        {% for video in videos %}
+            <tr>
+                <td class="py-3.5 text-center text-sm font-medium w-1/12">
+                    {{ video.id }}
+                </td>
+                <td class="py-3.5 text-center text-sm font-medium w-1/12">
+                    {{ video.name }}
+                </td>
+                <td class="py-3.5 text-center text-sm font-medium w-1/12">
+                    {{ video.games|length }}
+                </td>
+                <td class="py-3.5 text-center text-sm font-medium w-1/12">
+                    {{ video.lastUpdateDateTime|date('d/m/y H:i') }}
+                </td>
+                <td class="py-3.5 text-center text-sm font-medium w-1/12">
+                    {{ video.creationDateTime|date('d/m/y H:i') }}
+                </td>
+                <td class="py-3.5 text-center text-sm font-medium w-1/12">
+                    {% set buttons = [
+                        {
+                            name: 'Télécharger',
+                            path: path('app_video_download', {'id': video.id}),
+                            background: 'blue-500',
+                            hover: 'blue-600',
+                            condition: video.games is not empty,
+                        },
+                        {
+                            name: 'Modifier',
+                            path: path('app_video_update', {'id': video.id}),
+                            background: 'yellow-500',
+                            hover: 'yellow-600',
+                        },
+                        {
+                            name: 'Supprimer',
+                            path: path('app_video_delete', {'id': video.id}),
+                            background: 'red-500',
+                            hover: 'red-600',
+                        }
+                    ] %}
+                    {% set first = true %}
+                    {% set last = null %}
+                    {% for button in buttons|reverse %}
+                        {% if button.condition|default(true) and last is null %}
+                            {% set last = button.path %}
+                        {% endif %}
+                    {% endfor %}
+                    {% for button in buttons %}
+                        {% if button.condition|default(true) %}
+                            <a href="{{ button.path }}"
+                               class="{{ first ? 'rounded-l' }} {{ last == button.path ? 'rounded-r' }} border border-transparent bg-{{ button.background }} px-2.5 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-{{ button.hover }} focus:outline-none focus:ring-2 focus:ring-{{ button.hover }} focus:ring-offset-2"
+                            >
+                                {{ button.name }}
+                            </a>
+                            {% set first = false %}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td class="text-sm text-center font-medium w-1/12 py-4" colspan="6">
+                    Aucune vidéo
+                </td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td class="text-sm text-center font-medium w-1/12" colspan="6">
+                <a href="{{ path('app_video_create') }}"
+                   class="block rounded-b border border-transparent bg-indigo-600 px-2.5 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    Créer une video
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock body %}

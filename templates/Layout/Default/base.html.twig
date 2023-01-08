@@ -1,0 +1,126 @@
+{% extends 'Layout/base.html.twig' %}
+
+{% set sidebar_items = [
+    {
+        'text': 'Accueil',
+        'route': 'app_home_index'
+    },
+    {
+        'text': 'Jeux',
+        'route': 'app_game_list',
+    },
+    {
+        'text': 'Video',
+        'route': 'app_video_list',
+    },
+    {
+        'text': 'Déconnexion',
+        'route': 'app_user_authentication_logout'
+    }
+] %}
+
+{% block html_html %}
+    <html class="h-full bg-white" lang="fr">
+    {% block html %}
+        {% block head_html %}
+            <head>
+                {% block head %}
+                    <meta charset="UTF-8">
+                    <meta name="viewport"
+                          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+                    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                    <title>{% block title %}Find Video Games Screenshot{% endblock title %}</title>
+                    {% block stylesheets %}
+                        {{ encore_entry_link_tags('app') }}
+                    {% endblock %}
+                {% endblock head %}
+            </head>
+        {% endblock head_html %}
+        {% block body_html %}
+            <body class="h-full overflow-hidden">
+            <div class="flex h-full">
+                <div class="relative z-40 lg:hidden" role="dialog" aria-modal="true">
+                    <div class="fixed inset-0 bg-gray-600 bg-opacity-75"></div>
+                    <div class="fixed inset-0 z-40 flex">
+                        <div class="relative flex w-full max-w-xs flex-1 flex-col bg-zinc-700 focus:outline-none">
+                            <div class="absolute top-0 right-0 -mr-12 pt-2">
+                                <button type="button"
+                                        class="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                                    <span class="sr-only">Close sidebar</span>
+                                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                         aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div class="h-0 flex-1 overflow-y-auto pt-5 pb-4">
+                                <nav aria-label="Sidebar" class="mt-5">
+                                    <div class="space-y-1 px-2">
+                                        {% for sidebar_item in sidebar_items %}
+                                            {% set is_current = sidebar_item.route == app.request.get('_route') %}
+                                            <a href="{{ path(sidebar_item.route) }}"
+                                               class="{{ is_current ? 'bg-zinc-800 text-white' : 'text-gray-400 hover:bg-zinc-800 hover:text-white' }} group flex items-center px-2 py-2 text-base font-medium rounded-md">
+                                                {{ sidebar_item.text }}
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+
+                        <div class="w-14 flex-shrink-0" aria-hidden="true"></div>
+                    </div>
+                </div>
+                <div class="hidden lg:flex lg:flex-shrink-0">
+                    <div class="flex w-64 flex-col">
+                        <div class="flex min-h-0 flex-1 flex-col border-r border-zinc-700 bg-zinc-700">
+                            <div class="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
+                                <nav class="mt-5 flex-1" aria-label="Sidebar">
+                                    <div class="space-y-1 px-2">
+                                        {% for sidebar_item in sidebar_items %}
+                                            {% set is_current = sidebar_item.route == app.request.get('_route') %}
+                                            <a href="{{ path(sidebar_item.route) }}"
+                                               class="{{ is_current ? 'bg-zinc-800 text-white' : 'text-gray-400 hover:bg-zinc-800 hover:text-white' }} group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                                                {{ sidebar_item.text }}
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
+                    <div class="lg:hidden">
+                        <div class="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-4 py-1.5">
+                            <div>
+                                <button type="button"
+                                        class="-mr-3 inline-flex h-12 w-12 items-center justify-center rounded-md text-gray-500 hover:text-gray-900">
+                                    <span class="sr-only">Open sidebar</span>
+                                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative z-0 flex flex-1 overflow-hidden">
+                        <main class="relative z-0 flex-1 overflow-y-auto focus:outline-none bg-zinc-200">
+                            <div class="absolute inset-0 py-6 px-4 sm:px-6 lg:px-8">
+                                <div class="h-full rounded-lg">{% block body %}{% endblock body %}</div>
+                            </div>
+                        </main>
+                    </div>
+                </div>
+            </div>
+            {{ encore_entry_script_tags('app') }}
+            </body>
+        {% endblock body_html %}
+        </html>
+    {% endblock html %}
+{% endblock html_html %}

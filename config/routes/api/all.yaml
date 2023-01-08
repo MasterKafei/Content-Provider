@@ -1,0 +1,5 @@
+igdb:
+    prefix: /{version}/
+    resource: 'igdb/all.yaml'
+    defaults:
+        version: v4
