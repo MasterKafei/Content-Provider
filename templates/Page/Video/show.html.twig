@@ -1,5 +1,83 @@
 {% extends 'Layout/Default/base.html.twig' %}
 
 {% block body %}
-    {{ dump(video) }}
+    <div class="px-4 px-6 lg:px-8">
+        <div class="mt-8 flex flex-col">
+            <div class="-my-2 -mx-4 overflow-x-auto -mx-6 lg:-mx-8">
+                <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                    <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                        <table class="min-w-full divide-y divide-gray-300 align-middle">
+                            <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="py-3.5 pl-4 text-left text-sm font-semibold">
+                                    Titre
+                                </th>
+                                <th scope="col" class="py-3.5 text-center text-sm font-semibold">
+                                    Rating
+                                </th>
+                                <th scope="col" class="py-3.5 text-center text-sm font-semibold">
+                                    Genres
+                                </th>
+                                <th scope="col" class="py-3.5 text-center text-sm font-semibold">
+                                    Plateformes
+                                </th>
+                                <th scope="col" class="py-3.5 text-center text-sm font-semibold">
+                                    Images
+                                </th>
+                                <th scope="col" class="py-3.5 text-center text-sm font-semibold">
+                                    Action
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 bg-white">
+                            {% for result in results %}
+                                <tr class="{{ loop.index % 2 == 0 ? ' bg-gray-300' }}">
+                                    <td class="py-3.5 pl-4 text-left text-sm font-medium pl-6 w-1/12">
+                                        <a href="{{ path('app_game_details', {'id': result.id}) }}" target="_blank"
+                                           class="text-blue-500 hover:text-blue-700">{{ result.name }}</a>
+                                    </td>
+                                    <td class="py-4 text-sm w-1/12 text-center">
+                                        {{ result.rating is defined ? result.rating|round(2) ~ '%' : 'Inconnu' }}
+                                    </td>
+                                    <td class="py-4 text-sm w-1/12 text-justify">
+                                        {% for genre in result.genres|default([]) %}
+                                            {{ genre.name }} {{ not loop.last ? ', ' }}
+                                        {% else %}
+                                            Inconnu
+                                        {% endfor %}
+                                    </td>
+                                    <td class="px-3 py-4 text-sm w-1/6 text-center">
+                                        {% for platform in result.platforms|default([])|slice(0, 10) %}
+                                            {{ platform.name }}
+                                            {{ not loop.last ? ', ' }}
+                                        {% else %}
+                                            Inconnu
+                                        {% endfor %}
+                                    </td>
+                                    <td class="px-3 py-4 text-sm w-3/6 text-center">
+                                        <div class="grid grid-cols-3 gap-10">
+                                            {% for screenshot in result.screenshots|default([])|slice(0, 3) %}
+                                                <div>
+                                                    <img src="https://images.igdb.com/igdb/image/upload/t_1080p/{{ screenshot.image_id }}.jpg"
+                                                         class="border border-2 border-blue-200 rounded rounded-md"
+                                                         alt="">
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </td>
+                                    <td class="px-3 py-4 text-sm w-3/6 text-center">
+                                        <a href="{{ path('app_video_update_remove_game', {'id': video.id, 'game': result.id}) }}"
+                                           class="rounded border border-transparent bg-red-500 px-2.5 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2">
+                                            Supprimer
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock body %}

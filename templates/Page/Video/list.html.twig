@@ -42,45 +42,23 @@
                 <td class="py-3.5 text-center text-sm font-medium w-1/12">
                     {{ video.creationDateTime|date('d/m/y H:i') }}
                 </td>
-                <td class="py-3.5 text-center text-sm font-medium w-1/12">
-                    {% set buttons = [
-                        {
-                            name: 'Télécharger',
-                            path: path('app_video_download', {'id': video.id}),
-                            background: 'blue-500',
-                            hover: 'blue-600',
-                            condition: video.games is not empty,
-                        },
-                        {
-                            name: 'Modifier',
-                            path: path('app_video_update', {'id': video.id}),
-                            background: 'yellow-500',
-                            hover: 'yellow-600',
-                        },
-                        {
-                            name: 'Supprimer',
-                            path: path('app_video_delete', {'id': video.id}),
-                            background: 'red-500',
-                            hover: 'red-600',
-                        }
-                    ] %}
-                    {% set first = true %}
-                    {% set last = null %}
-                    {% for button in buttons|reverse %}
-                        {% if button.condition|default(true) and last is null %}
-                            {% set last = button.path %}
-                        {% endif %}
-                    {% endfor %}
-                    {% for button in buttons %}
-                        {% if button.condition|default(true) %}
-                            <a href="{{ button.path }}"
-                               class="{{ first ? 'rounded-l' }} {{ last == button.path ? 'rounded-r' }} border border-transparent bg-{{ button.background }} px-2.5 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-{{ button.hover }} focus:outline-none focus:ring-2 focus:ring-{{ button.hover }} focus:ring-offset-2"
-                            >
-                                {{ button.name }}
-                            </a>
-                            {% set first = false %}
-                        {% endif %}
-                    {% endfor %}
+                <td class="py-3.5 text-center text-sm font-medium w-1/6">
+                    <a href="{{ path('app_video_show', {'id': video.id}) }}"
+                       class="rounded-l  border border-transparent bg-green-500 px-2.5 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2">
+                        Visualiser
+                    </a>
+                    <a href="{{ path('app_video_download', {'id': video.id}) }}"
+                       class="  border border-transparent bg-blue-500 px-2.5 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">
+                        Télécharger
+                    </a>
+                    <a href="{{ path('app_video_update', {'id': video.id}) }}"
+                       class="  border border-transparent bg-yellow-500 px-2.5 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:ring-offset-2">
+                        Modifier
+                    </a>
+                    <a href="{{ path('app_video_delete', {'id': video.id}) }}"
+                       class=" rounded-r border border-transparent bg-red-500 px-2.5 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2">
+                        Supprimer
+                    </a>
                 </td>
             </tr>
         {% else %}

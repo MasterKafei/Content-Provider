@@ -8,8 +8,10 @@ use App\Entity\Video;
 use App\Form\Type\Video\CreateVideoType;
 use App\Form\Type\Video\UpdateVideoType;
 use App\Repository\VideoRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -52,10 +54,26 @@ class VideoController extends AbstractController
     }
 
     #[Route(path: '/show/{id}', name: 'app_video_show')]
-    public function showVideo(Video $video): Response
+    public function showVideo(Video $video, IgdbBusiness $igdbBusiness): Response
     {
+        $conditions = implode(' | ', array_map(function ($gameId) {
+            return "id = $gameId";
+        }, $video->getGames()));
+
+        $request = new IgdbRequest();
+        $request
+            ->addField('*')
+            ->addField('screenshots.image_id')
+            ->addField('platforms.*')
+            ->addField('genres.*')
+            ->setRouteName('igdb_games')
+            ->addCondition($conditions);
+
+        $results = $igdbBusiness->request($request);
+
         return $this->render('Page/Video/show.html.twig', [
             'video' => $video,
+            'results' => $results,
         ]);
     }
 
@@ -115,5 +133,27 @@ class VideoController extends AbstractController
         @unlink($zipName);
 
         return $response;
+    }
+
+    #[Route(path: '/update/{id}/delete/{game}', name: 'app_video_update_remove_game')]
+    public function deleteGame(Video $video, int $game, EntityManagerInterface $entityManager): RedirectResponse
+    {
+        $games = $video->getGames();
+        foreach ($games as $index => $gameId) {
+            if ($game == $gameId) {
+                unset($games[$index]);
+            }
+        }
+
+        $video->setGames($games);
+
+        $entityManager->persist($video);
+        $entityManager->flush();
+
+        if (empty($video->getGames())) {
+            return $this->redirectToRoute('app_video_list');
+        }
+
+        return $this->redirectToRoute('app_video_show', ['id' => $video->getId()]);
     }
 }
